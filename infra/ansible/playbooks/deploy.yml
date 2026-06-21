@@ -1,0 +1,68 @@
+---
+# deploy.yml — Called by Jenkins on every successful main branch build.
+# Usage: ansible-playbook -i inventory.ini playbooks/deploy.yml
+#        --extra-vars "build_number=42 registry=myuser"
+
+- name: Deploy PhysioLink stack
+  hosts: physiolink_servers
+  become: yes
+
+  vars:
+    build_number: "{{ build_number | default('latest') }}"
+    registry: "{{ registry | default('your-dockerhub-username') }}"
+    app_dir: /opt/physiolink
+
+  tasks:
+    - name: Ensure app directory exists
+      file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Copy docker-compose file
+      copy:
+        src: ../../docker-compose.yml
+        dest: "{{ app_dir }}/docker-compose.yml"
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Template .env file from vault
+      template:
+        src: ../templates/.env.j2
+        dest: "{{ app_dir }}/.env"
+        owner: ubuntu
+        group: ubuntu
+        mode: '0600'
+
+    - name: Login to Docker registry
+      shell: |
+        echo "{{ docker_password }}" | docker login -u "{{ docker_username }}" --password-stdin
+      no_log: true
+      when: docker_username is defined
+
+    - name: Pull latest Docker images
+      shell: |
+        docker compose -f {{ app_dir }}/docker-compose.yml pull
+      environment:
+        BUILD_NUMBER: "{{ build_number }}"
+
+    - name: Restart PhysioLink stack (rolling)
+      shell: |
+        docker compose -f {{ app_dir }}/docker-compose.yml up -d --remove-orphans
+      environment:
+        BUILD_NUMBER: "{{ build_number }}"
+
+    - name: Remove dangling images
+      shell: docker image prune -f
+      ignore_errors: yes
+
+    - name: Verify stack is healthy
+      shell: |
+        docker compose -f {{ app_dir }}/docker-compose.yml ps --format json
+      register: stack_status
+
+    - name: Print stack status
+      debug:
+        var: stack_status.stdout

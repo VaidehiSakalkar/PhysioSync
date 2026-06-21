@@ -1,0 +1,47 @@
+---
+# roles/app/tasks/main.yml — Create app directory and systemd service
+
+- name: Create PhysioLink application directory
+  file:
+    path: /opt/physiolink
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Create systemd service for PhysioLink
+  copy:
+    dest: /etc/systemd/system/physiolink.service
+    content: |
+      [Unit]
+      Description=PhysioLink Docker Compose Stack
+      Requires=docker.service
+      After=docker.service network-online.target
+
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      WorkingDirectory=/opt/physiolink
+      ExecStart=/usr/bin/docker compose up -d --remove-orphans
+      ExecStop=/usr/bin/docker compose down
+      TimeoutStartSec=300
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Enable PhysioLink systemd service
+  systemd:
+    name: physiolink
+    enabled: yes
+    daemon_reload: yes
+
+- name: Configure system limits for Kafka/services
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+  loop:
+    - { key: vm.max_map_count,           value: "262144" }
+    - { key: net.core.somaxconn,         value: "65535"  }
+    - { key: net.ipv4.tcp_max_syn_backlog, value: "65535" }

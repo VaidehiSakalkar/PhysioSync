@@ -1,0 +1,11 @@
+---
+# provision.yml — Run ONCE on a fresh Ubuntu VM to prepare it for PhysioLink.
+# Usage: ansible-playbook -i inventory.ini playbooks/provision.yml --ask-become-pass
+
+- name: Provision PhysioLink server
+  hosts: physiolink_servers
+  become: yes
+
+  roles:
+    - role: docker
+    - role: app

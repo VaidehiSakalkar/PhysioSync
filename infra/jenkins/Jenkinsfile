@@ -1,0 +1,146 @@
+// Jenkinsfile — PhysioLink CI/CD Pipeline
+pipeline {
+    agent any
+
+    environment {
+        REGISTRY         = "your-dockerhub-username"
+        GEMINI_API_KEY   = credentials('gemini-api-key')
+        JWT_SECRET       = credentials('jwt-secret')
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 60, unit: 'MINUTES')
+        disableConcurrentBuilds()
+    }
+
+    stages {
+        // ── 1. Checkout ───────────────────────────────────────────────────────
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-org/physiolink'
+            }
+        }
+
+        // ── 2. Tests (parallel) ───────────────────────────────────────────────
+        stage('Test') {
+            parallel {
+                stage('patient-service') {
+                    steps {
+                        dir('services/patient-service') {
+                            sh 'mvn test -q'
+                        }
+                    }
+                    post { always { junit 'services/patient-service/target/surefire-reports/*.xml' } }
+                }
+
+                stage('exercise-service') {
+                    steps {
+                        dir('services/exercise-service') {
+                            sh 'mvn test -q'
+                        }
+                    }
+                    post { always { junit 'services/exercise-service/target/surefire-reports/*.xml' } }
+                }
+
+                stage('appointment-service') {
+                    steps {
+                        dir('services/appointment-service') {
+                            sh 'mvn test -q'
+                        }
+                    }
+                }
+
+                stage('ml-service') {
+                    steps {
+                        dir('ml-service') {
+                            sh '''
+                                python3 -m venv .venv
+                                source .venv/bin/activate
+                                pip install -r requirements.txt -q
+                                pytest tests/ -v --tb=short
+                            '''
+                        }
+                    }
+                }
+
+                stage('frontend') {
+                    steps {
+                        dir('frontend') {
+                            sh 'npm ci --silent && npm test'
+                        }
+                    }
+                }
+            }
+        }
+
+        // ── 3. Build Docker Images ────────────────────────────────────────────
+        stage('Build Docker Images') {
+            steps {
+                sh '''
+                    docker build -t $REGISTRY/physiolink-gateway:$BUILD_NUMBER    ./services/api-gateway
+                    docker build -t $REGISTRY/physiolink-patient:$BUILD_NUMBER    ./services/patient-service
+                    docker build -t $REGISTRY/physiolink-exercise:$BUILD_NUMBER   ./services/exercise-service
+                    docker build -t $REGISTRY/physiolink-appointment:$BUILD_NUMBER ./services/appointment-service
+                    docker build -t $REGISTRY/physiolink-video:$BUILD_NUMBER      ./services/video-service
+                    docker build -t $REGISTRY/physiolink-ml:$BUILD_NUMBER         ./ml-service
+                    docker build -t $REGISTRY/physiolink-frontend:$BUILD_NUMBER   ./frontend
+                '''
+            }
+        }
+
+        // ── 4. Push to Registry ───────────────────────────────────────────────
+        stage('Push to Registry') {
+            when { branch 'main' }
+            steps {
+                withDockerRegistry([credentialsId: 'dockerhub-creds', url: '']) {
+                    sh '''
+                        docker push $REGISTRY/physiolink-gateway:$BUILD_NUMBER
+                        docker push $REGISTRY/physiolink-patient:$BUILD_NUMBER
+                        docker push $REGISTRY/physiolink-exercise:$BUILD_NUMBER
+                        docker push $REGISTRY/physiolink-appointment:$BUILD_NUMBER
+                        docker push $REGISTRY/physiolink-video:$BUILD_NUMBER
+                        docker push $REGISTRY/physiolink-ml:$BUILD_NUMBER
+                        docker push $REGISTRY/physiolink-frontend:$BUILD_NUMBER
+
+                        # Tag latest
+                        for svc in gateway patient exercise appointment video ml frontend; do
+                            docker tag $REGISTRY/physiolink-$svc:$BUILD_NUMBER \
+                                       $REGISTRY/physiolink-$svc:latest
+                            docker push $REGISTRY/physiolink-$svc:latest
+                        done
+                    '''
+                }
+            }
+        }
+
+        // ── 5. Deploy via Ansible ─────────────────────────────────────────────
+        stage('Deploy') {
+            when { branch 'main' }
+            steps {
+                sh '''
+                    ansible-playbook \
+                        -i infra/ansible/inventory.ini \
+                        infra/ansible/playbooks/deploy.yml \
+                        --extra-vars "build_number=$BUILD_NUMBER registry=$REGISTRY"
+                '''
+            }
+        }
+    }
+
+    post {
+        failure {
+            mail(
+                to:      'team@physiolink.dev',
+                subject: "❌ PhysioLink Build #$BUILD_NUMBER FAILED",
+                body:    "Build URL: ${BUILD_URL}\nBranch: ${GIT_BRANCH}"
+            )
+        }
+        success {
+            echo "✅ Build #$BUILD_NUMBER deployed successfully."
+        }
+        always {
+            cleanWs()
+        }
+    }
+}
