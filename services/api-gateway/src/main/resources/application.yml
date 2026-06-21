@@ -1,0 +1,80 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  # ── Redis (for rate limiter) ──────────────────────────────────────────────
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+  # ── Cloud Gateway Routes ──────────────────────────────────────────────────
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: ["GET","POST","PUT","DELETE","OPTIONS","PATCH"]
+            allowedHeaders: "*"
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            redis-rate-limiter.requestedTokens: 1
+      routes:
+        # Auth (pass-through — no JWT required)
+        - id: auth-route
+          uri: http://${PATIENT_SERVICE_HOST:patient-service}:8081
+          predicates:
+            - Path=/api/auth/**
+
+        # Patient Service
+        - id: patient-service
+          uri: http://${PATIENT_SERVICE_HOST:patient-service}:8081
+          predicates:
+            - Path=/api/patients/**, /api/physios/**
+          filters:
+            - name: JwtAuthFilter
+
+        # Exercise Service
+        - id: exercise-service
+          uri: http://${EXERCISE_SERVICE_HOST:exercise-service}:8082
+          predicates:
+            - Path=/api/exercises/**
+          filters:
+            - name: JwtAuthFilter
+
+        # Appointment Service
+        - id: appointment-service
+          uri: http://${APPOINTMENT_SERVICE_HOST:appointment-service}:8083
+          predicates:
+            - Path=/api/appointments/**
+          filters:
+            - name: JwtAuthFilter
+
+        # Video Service
+        - id: video-service
+          uri: http://${VIDEO_SERVICE_HOST:video-service}:8084
+          predicates:
+            - Path=/api/video/**
+          filters:
+            - name: JwtAuthFilter
+
+# ── JWT ─────────────────────────────────────────────────────────────────────
+jwt:
+  secret: ${JWT_SECRET:dev-insecure-secret-change-me}
+
+# ── Actuator ─────────────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

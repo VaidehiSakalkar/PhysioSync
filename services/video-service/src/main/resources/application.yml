@@ -1,0 +1,31 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: video-service
+
+  websocket:
+    path: /ws/video
+
+# ── MinIO ─────────────────────────────────────────────────────────────────────
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket:
+    recordings: ${MINIO_BUCKET_RECORDINGS:recordings}
+
+# ── STUN/TURN config returned to frontend ────────────────────────────────────
+webrtc:
+  ice-servers:
+    - urls: "stun:stun.l.google.com:19302"
+    - urls: "stun:stun1.l.google.com:19302"
+  # To add TURN: append entry with urls, username, credential
+
+# ── Actuator ──────────────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
