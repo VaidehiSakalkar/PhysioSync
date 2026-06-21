@@ -1,0 +1,330 @@
+# =============================================================================
+# PhysioLink — Mono-repo .gitignore
+# Covers: Java/Maven · Python · Node/React · Docker · Ansible · OS · IDE
+# =============================================================================
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECRETS & ENV FILES
+# ─────────────────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!.env.test
+*.env.local
+*.env.production
+secrets/
+**/.vault_pass
+infra/ansible/.vault_pass
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JAVA / MAVEN  (services/*)
+# ─────────────────────────────────────────────────────────────────────────────
+# Build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+*.nar
+
+# Maven wrapper binary
+.mvn/wrapper/maven-wrapper.jar
+
+# Maven local settings (contains credentials)
+**/settings.xml
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+# STS / Spring Tools Suite
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# Eclipse / NetBeans
+bin/
+*.launch
+nbproject/private/
+
+# JRebel
+rebel.xml
+rebel-remote.xml
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PYTHON / FASTAPI  (ml-service/)
+# ─────────────────────────────────────────────────────────────────────────────
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+
+# Type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+
+# Linters
+.ruff_cache/
+
+# Jupyter / IPython
+.ipynb_checkpoints
+*.ipynb
+
+# ChromaDB local persist directory (use containerised ChromaDB instead)
+chroma_store/
+ml-service/chroma_store/
+
+# MediaPipe model cache (downloaded automatically at runtime)
+ml-service/.mediapipe/
+
+# HuggingFace sentence-transformer model cache
+.cache/huggingface/
+ml-service/.cache/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NODE / REACT / VITE  (frontend/)
+# ─────────────────────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+.pnp.cjs
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+!.yarn/releases
+
+# Vite build output
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Local env overrides (Vite loads .env.local with highest priority)
+*.local
+
+# Storybook
+storybook-static/
+
+# Package manager debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCKER
+# ─────────────────────────────────────────────────────────────────────────────
+# Local Docker daemon config / credentials
+.docker/
+
+# Named volumes mounted as bind-mounts during local dev
+infra/data/
+infra/volumes/
+
+# Local compose overrides (never commit — contain host-specific paths/secrets)
+docker-compose.override.yml
+docker-compose.local.yml
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ANSIBLE
+# ─────────────────────────────────────────────────────────────────────────────
+# Left behind by failed playbook runs
+*.retry
+
+# Ansible Vault password file (NEVER commit)
+.vault_pass
+.vault_password
+vault_password_file
+
+# Dynamically generated inventories
+infra/ansible/inventory.generated.ini
+
+# Ansible fact cache
+infra/ansible/.facts_cache/
+fact_cache/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JENKINS
+# ─────────────────────────────────────────────────────────────────────────────
+.jenkins/
+jenkins_home/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IDE — IntelliJ IDEA / WebStorm / PyCharm / DataGrip
+# ─────────────────────────────────────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code — ignore workspace settings but allow shared extension recommendations
+.vscode/
+*.code-workspace
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+*~
+Session.vim
+.netrwhist
+
+# Emacs
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPERATING SYSTEM
+# ─────────────────────────────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOGS & TEMPORARY FILES
+# ─────────────────────────────────────────────────────────────────────────────
+*.log
+*.log.*
+logs/
+log/
+*.tmp
+*.temp
+*.orig
+*.rej
+*.patch
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TEST / COVERAGE REPORTS
+# ─────────────────────────────────────────────────────────────────────────────
+test-results/
+coverage/
+*.lcov
+reports/
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MISC
+# ─────────────────────────────────────────────────────────────────────────────
+# Terraform (future use)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# Compressed archives (avoid accidental commits)
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tgz
+*.rar
+*.7z
