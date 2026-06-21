@@ -1,0 +1,3 @@
+# Physiotherapy knowledge base
+# Place PDF or .txt clinical guidelines here.
+# Run `python -m app.langchain.embedder` to embed into ChromaDB.
