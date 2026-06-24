@@ -5,71 +5,44 @@ spring:
   application:
     name: api-gateway
 
-  # ── Redis (for rate limiter) ──────────────────────────────────────────────
+  # ── Redis (blocking Lettuce — used by RateLimitFilter if switched to distributed buckets) ──
   data:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
 
-  # ── Cloud Gateway Routes ──────────────────────────────────────────────────
-  cloud:
-    gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods: ["GET","POST","PUT","DELETE","OPTIONS","PATCH"]
-            allowedHeaders: "*"
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
-            redis-rate-limiter.requestedTokens: 1
-      routes:
-        # Auth (pass-through — no JWT required)
-        - id: auth-route
-          uri: http://${PATIENT_SERVICE_HOST:patient-service}:8081
-          predicates:
-            - Path=/api/auth/**
+# ── Gateway route table ───────────────────────────────────────────────────────
+# ReverseProxyFilter matches routes top-to-bottom; place more-specific prefixes first.
+# /api/auth is public (JWT filter skips it via shouldNotFilter); all others are protected.
+gateway:
+  routes:
+    - prefix: /api/auth
+      target: http://${PATIENT_SERVICE_HOST:localhost}:8081
 
-        # Patient Service
-        - id: patient-service
-          uri: http://${PATIENT_SERVICE_HOST:patient-service}:8081
-          predicates:
-            - Path=/api/patients/**, /api/physios/**
-          filters:
-            - name: JwtAuthFilter
+    - prefix: /api/patients
+      target: http://${PATIENT_SERVICE_HOST:localhost}:8081
 
-        # Exercise Service
-        - id: exercise-service
-          uri: http://${EXERCISE_SERVICE_HOST:exercise-service}:8082
-          predicates:
-            - Path=/api/exercises/**
-          filters:
-            - name: JwtAuthFilter
+    - prefix: /api/physios
+      target: http://${PATIENT_SERVICE_HOST:localhost}:8081
 
-        # Appointment Service
-        - id: appointment-service
-          uri: http://${APPOINTMENT_SERVICE_HOST:appointment-service}:8083
-          predicates:
-            - Path=/api/appointments/**
-          filters:
-            - name: JwtAuthFilter
+    - prefix: /api/exercises
+      target: http://${EXERCISE_SERVICE_HOST:localhost}:8082
 
-        # Video Service
-        - id: video-service
-          uri: http://${VIDEO_SERVICE_HOST:video-service}:8084
-          predicates:
-            - Path=/api/video/**
-          filters:
-            - name: JwtAuthFilter
+    - prefix: /api/appointments
+      target: http://${APPOINTMENT_SERVICE_HOST:localhost}:8083
 
-# ── JWT ─────────────────────────────────────────────────────────────────────
+    - prefix: /api/video
+      target: http://${VIDEO_SERVICE_HOST:localhost}:8084
+
+  rate-limit:
+    replenish-rate: 10   # tokens added per second (sustained throughput)
+    burst-capacity: 20   # maximum token accumulation (allows short bursts)
+
+# ── JWT ───────────────────────────────────────────────────────────────────────
 jwt:
   secret: ${JWT_SECRET:dev-insecure-secret-change-me}
 
-# ── Actuator ─────────────────────────────────────────────────────────────────
+# ── Actuator ──────────────────────────────────────────────────────────────────
 management:
   endpoints:
     web:
