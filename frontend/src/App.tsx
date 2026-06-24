@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ToastProvider } from './components/ui/Toast'
-import { LoginPage }              from './pages/auth/LoginPage'
-import { RegisterPage }           from './pages/auth/RegisterPage'
-import { PatientDashboard }       from './pages/patient/PatientDashboard'
-import { SessionPage }            from './pages/patient/SessionPage'
-import { PhysioDashboard }        from './pages/physio/PhysioDashboard'
-import { VideoConsultationPage }  from './pages/video/VideoConsultationPage'
+import { LoginPage }                from './pages/auth/LoginPage'
+import { RegisterPage }             from './pages/auth/RegisterPage'
+import { PatientDashboard }         from './pages/patient/PatientDashboard'
+import { SessionPage }              from './pages/patient/SessionPage'
+import { AppointmentBookingPage }   from './pages/patient/AppointmentBookingPage'
+import { SessionHistoryPage }       from './pages/patient/SessionHistoryPage'
+import { PhysioDashboard }          from './pages/physio/PhysioDashboard'
+import { VideoConsultationPage }    from './pages/video/VideoConsultationPage'
 
 /** Simple auth guard — reads JWT from localStorage */
 function PrivateRoute({ children, role }: { children: JSX.Element; role?: 'PATIENT' | 'PHYSIO' }) {
@@ -31,6 +33,12 @@ export default function App() {
           } />
           <Route path="/patient/session/:exerciseId" element={
             <PrivateRoute role="PATIENT"><SessionPage /></PrivateRoute>
+          } />
+          <Route path="/patient/appointments" element={
+            <PrivateRoute role="PATIENT"><AppointmentBookingPage /></PrivateRoute>
+          } />
+          <Route path="/patient/history" element={
+            <PrivateRoute role="PATIENT"><SessionHistoryPage /></PrivateRoute>
           } />
 
           {/* Physio routes */}

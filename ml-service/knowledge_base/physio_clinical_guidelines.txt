@@ -1,0 +1,394 @@
+PHYSIOTHERAPY CLINICAL GUIDELINES — MUSCULOSKELETAL REHABILITATION
+
+=============================================================================
+SECTION 1: GENERAL PRINCIPLES OF EXERCISE THERAPY
+=============================================================================
+
+1.1 DOSAGE AND PROGRESSION
+- Begin with sub-maximal loading (40-60% of maximum voluntary contraction) for acute phases.
+- Progress loading by no more than 10% per week (the "10% rule") to minimise overuse injury risk.
+- Ensure adequate rest between sessions: 24-48 hours for resistance training.
+- Pain during exercise should not exceed 3-4/10 on Numeric Rating Scale (NRS).
+- DOMS (delayed-onset muscle soreness) of up to 24-48 hours post-exercise is acceptable.
+
+1.2 REPETITIONS AND SETS (GENERAL)
+- Strength (hypertrophy): 3-5 sets × 8-12 reps at 60-80% 1RM, 60-90 sec rest.
+- Endurance: 2-3 sets × 15-25 reps at 30-50% 1RM, 30-60 sec rest.
+- Motor re-learning/early rehab: 3 sets × 10-15 reps with high quality of movement emphasis.
+- Plyometric/power: 3-4 sets × 6-8 reps with full recovery (2-3 min).
+
+1.3 WARM-UP AND COOL-DOWN
+- 5-10 minutes of low-intensity aerobic warm-up (e.g., cycling, walking) before exercises.
+- Dynamic stretching during warm-up; static stretching (30 s holds) in cool-down.
+- Joint mobility drills specific to the target area before resistance exercises.
+
+=============================================================================
+SECTION 2: KNEE REHABILITATION
+=============================================================================
+
+2.1 ANTERIOR CRUCIATE LIGAMENT (ACL) RECONSTRUCTION REHAB
+
+Phase 1 (0-2 weeks): Acute Phase
+- Goals: Reduce swelling, restore ROM 0-90°, regain quadriceps activation.
+- Exercises: Quad sets, straight leg raises (SLR), heel slides, ankle pumps.
+- Weight bearing: Partial weight bearing with crutches as tolerated.
+- Ice/elevation 20 min every 2 hours.
+- Avoid: Full knee extension under load, deep flexion >90°.
+
+Phase 2 (2-6 weeks): Sub-Acute Phase
+- Goals: Full ROM, normal gait, quadriceps strength 50% of contralateral limb.
+- Exercises: Mini-squats (0-45°), step-ups (10 cm), leg press (low load), hamstring curls.
+- Weight bearing: Full weight bearing; discontinue crutches when normal gait achieved.
+- Introduce stationary cycling when ROM >110°.
+
+Phase 3 (6-12 weeks): Strengthening Phase
+- Goals: Quadriceps strength 70% of contralateral, single-leg balance 30 sec.
+- Exercises: Single-leg press, lunges, Romanian deadlift, lateral band walks, proprioception board.
+- Introduce treadmill jogging when quad index >70%.
+
+Phase 4 (3-6 months): Functional / Return-to-Sport Phase
+- Goals: Limb symmetry index (LSI) >90% for quad and hamstring strength.
+- Exercises: Plyometrics (box jumps, broad jumps), agility ladders, sport-specific drills.
+- Criteria for return to sport: LSI >90%, single-leg hop test >90%, pain-free.
+
+RED FLAGS — ACL Rehab:
+- Sudden increase in joint effusion (swelling) after exercise.
+- Painful clicking or locking of the joint.
+- Quad strength plateau over 4 weeks despite training.
+- Signs of graft failure: instability during weight bearing.
+
+2.2 PATELLOFEMORAL PAIN SYNDROME (PFPS)
+
+Key Principles:
+- Load management: Reduce stairs, squatting, and prolonged sitting with knee bent >90°.
+- Strengthen VMO (vastus medialis oblique) to improve patellar tracking.
+- Hip abductor and external rotator strengthening reduces valgus stress on patella.
+
+Recommended Exercises:
+- Terminal knee extensions (TKE) with band: 3×15.
+- Clamshells: 3×15 per side.
+- Side-lying hip abduction: 3×15.
+- Wall squat with ball between knees: 3×10.
+- Step-downs (eccentric focus, 10 cm step): 3×15.
+- Straight leg raise with 1-2 kg ankle weight: 3×15.
+
+Avoid Until Pain-Free:
+- Deep squats (>90° flexion).
+- Running on hills or stairs.
+- High-impact plyometrics.
+
+Joint Angle Targets:
+- Squat depth: limit to 60° in early rehab, progress to 90° by week 6.
+- Optimal terminal extension: 0-5° hyperextension acceptable.
+
+=============================================================================
+SECTION 3: SHOULDER REHABILITATION
+=============================================================================
+
+3.1 ROTATOR CUFF TENDINOPATHY
+
+Load Management Protocol (Jobe's Criteria):
+- Begin with isometric exercises in pain-free range.
+- Progress to isotonic (concentric + eccentric) when isometric pain-free.
+- Eccentric loading is evidence-based for tendinopathy management.
+
+Key Exercises:
+- Pendulum (Codman's): 2×30 sec, pain relief focus.
+- External rotation with band: 3×15, neutral position.
+- Side-lying external rotation (90-90 position): 3×12.
+- Scapular retraction/depression: 3×15.
+- Prone Y, T, W: 3×10 each.
+- Serratus anterior activation (wall push-up plus): 3×15.
+
+ROM Targets:
+- Flexion: Full 180° by 8-12 weeks.
+- External rotation: 60-90° (depends on dominant side).
+- Abduction in plane of scapula (scaption): 120-160° typical.
+
+Red Flags — Shoulder:
+- Night pain preventing sleep despite analgesia.
+- Deltoid atrophy or weakness in multiple rotator cuff muscles (possible massive tear).
+- Cervical spine referral pattern: pain to elbow or below (refer for cervical assessment).
+- Failure to progress after 6 weeks of conservative treatment (consider imaging).
+
+3.2 POST-OPERATIVE ROTATOR CUFF REPAIR
+
+Phase 1 (0-4 weeks): Protection Phase
+- Arm in sling at all times except exercises.
+- Passive ROM only: pendulums, passive flexion to 90°, ER to neutral.
+- Elbow, wrist, hand active ROM to prevent stiffness.
+- Avoid: Active shoulder elevation, internal rotation behind back.
+
+Phase 2 (4-8 weeks): Active-Assisted Phase
+- Active-assisted ROM with pulley or cane.
+- Target: Flexion 120°, abduction 90°, ER 40°.
+- Isometric strengthening in neutral.
+
+Phase 3 (8-12 weeks): Active Strengthening
+- Active ROM to full range; begin isotonic with 0.5-1 kg.
+- Scapular stabilisation exercises.
+- Avoid overhead lifting >1 kg until 12 weeks.
+
+Phase 4 (3-6 months): Functional Phase
+- Progressive resistance: Theraband → free weights.
+- Return to overhead activities and sport-specific training.
+- Return to contact sport: minimum 6 months, 90% strength symmetry.
+
+=============================================================================
+SECTION 4: LUMBAR SPINE (LOWER BACK) REHABILITATION
+=============================================================================
+
+4.1 NON-SPECIFIC LOWER BACK PAIN
+
+First-Line Treatment:
+- Remain active; avoid prolonged bed rest (Grade A evidence).
+- Reassurance and education about benign nature of non-specific LBP.
+- Supervised exercise program superior to general advice (NICE 2016).
+
+Exercise Hierarchy:
+1. Motor control / core stability (Weeks 1-2):
+   - Abdominal drawing-in manoeuvre (ADIM): 10×10 sec holds.
+   - Dead bug: 3×10 alternating arms/legs.
+   - Bird dog: 3×10 per side.
+
+2. Strength progression (Weeks 3-6):
+   - Glute bridge: 3×15.
+   - Single-leg bridge: 3×12.
+   - Plank: progress from 20 sec to 60 sec over 4 weeks.
+   - Side plank: 3×20 sec per side.
+
+3. Functional / loaded (Weeks 6-12):
+   - Romanian deadlift (RDL): 3×10.
+   - Hip hinge with resistance band.
+   - Step-ups with load.
+   - Farmer's carry.
+
+Joint Angle Targets — Lumbar Spine:
+- Flexion ROM: 60-80° (fingertips to mid-shin typical).
+- Extension ROM: 20-30°.
+- Lateral flexion: 15-25° per side.
+
+Red Flags — Lumbar Spine (refer for urgent medical review):
+- Cauda equina syndrome: bilateral leg weakness, saddle anaesthesia, bowel/bladder dysfunction.
+- Unexplained weight loss + back pain (possible malignancy).
+- Fever + back pain (possible infection/discitis).
+- History of cancer with new onset back pain.
+- Vertebral fracture risk: osteoporosis, steroid use, significant trauma.
+- Night pain not relieved by position change.
+
+4.2 LUMBAR DISC HERNIATION (RADICULOPATHY)
+
+Directional Preference Protocol (McKenzie Method):
+- Assess centralisation response: exercises that centralise (move pain proximally) are preferred.
+- Most L4/L5 herniations respond to extension bias (prone press-ups).
+- Flexion bias exercises for lateral recess stenosis.
+
+Extension Bias Protocol:
+- Prone lying: 5×1 min.
+- Prone press-ups (cobra): 3×10.
+- Standing lumbar extension: 3×10.
+- Progress to McKenzie extension in stride standing if response positive.
+
+Avoid:
+- Sustained flexion postures (prolonged sitting >30 min without break).
+- Loaded spinal flexion (toe touches with weight, forward bending while loading).
+- High-impact activities until pain-free.
+
+=============================================================================
+SECTION 5: HIP REHABILITATION
+=============================================================================
+
+5.1 HIP OSTEOARTHRITIS
+
+Conservative Management:
+- Aerobic exercise (water aerobics, cycling): 150 min/week moderate intensity.
+- Strengthening: Hip abductors, extensors, external rotators.
+- Weight reduction if BMI >27 (reduces joint load by 3× per kg lost).
+
+Exercise Protocol:
+- Clamshells: 3×15 per side.
+- Hip abduction in side-lying: 3×15.
+- Mini-squats: 3×15 (pain-free range).
+- Step-ups: 3×12.
+- Hip extension in prone: 3×15.
+- Stationary cycling: 20-30 min at low resistance.
+
+ROM Targets:
+- Flexion: 115-125° (loss >30° = severe OA).
+- Extension: 10-20°.
+- Internal rotation: 20-35° (early loss = hallmark of hip OA).
+- External rotation: 40-60°.
+
+Red Flags — Hip:
+- Groin pain in <50 year old with limited IR (consider AVN or labral tear).
+- Inability to weight bear after minor trauma (possible fracture).
+- Night pain, fever, raised CRP (possible septic arthritis — orthopaedic emergency).
+
+5.2 TOTAL HIP ARTHROPLASTY (THA) RECOVERY
+
+Posterior Approach Precautions (6-12 weeks):
+- No hip flexion >90°.
+- No hip adduction past midline.
+- No internal rotation.
+- Raised toilet seat, avoid low chairs.
+
+Anterior Approach (fewer restrictions):
+- Avoid extremes of external rotation in early phase.
+- Weight bearing as tolerated from day 1.
+
+Exercise Progression (both approaches):
+- Phase 1 (0-6 weeks): Ankle pumps, quad sets, SLR, heel slides, abduction in lying.
+- Phase 2 (6-12 weeks): Bridging, clamshells, mini-squats, gait training.
+- Phase 3 (3-6 months): Progressive resistance, stairs, outdoor walking, cycling.
+- Return to low-impact sport: 3-6 months; high-impact (tennis): 12 months+.
+
+=============================================================================
+SECTION 6: ANKLE AND FOOT REHABILITATION
+=============================================================================
+
+6.1 LATERAL ANKLE SPRAIN
+
+POLICE Protocol (first 48-72 hours):
+- Protection: Air stirrup or bracing.
+- Optimal Loading: Early weight bearing as tolerated.
+- Ice: 15-20 min, every 2 hours.
+- Compression: Bandage.
+- Elevation: Above heart level.
+
+Functional Rehabilitation (Week 1-4):
+- Alphabet exercises (ankle circles).
+- Theraband dorsiflexion, plantarflexion, inversion, eversion: 3×15.
+- Calf raises (bilateral → unilateral): 3×15.
+- Single-leg balance: 30 sec → eyes closed → BOSU.
+- Proprioception board: 3×30 sec.
+
+Criteria for Return to Sport:
+- Full pain-free ROM.
+- Hop test >90% of contralateral.
+- Figure-8 run test <5% asymmetry.
+- Single-leg calf raise >25 reps.
+
+6.2 ACHILLES TENDINOPATHY
+
+Eccentric Loading Protocol (Alfredson Protocol):
+- Eccentric calf drops off step: 3×15 twice daily.
+- Perform even with mild-moderate pain (NRS 3-5 acceptable during exercise).
+- Duration: 12 weeks minimum.
+- Progress from bilateral → unilateral → add load (backpack/weighted vest).
+
+Isometric Loading (heavy-slow resistance alternative):
+- Seated calf raise with heavy load, 5×45 sec holds, 5× per week.
+- Evidence: Similar outcomes to Alfredson with less pain during exercise.
+
+Red Flags — Achilles:
+- Sudden onset of calf/heel pain with audible 'pop' (possible Achilles rupture — refer urgently).
+- Complete loss of plantarflexion power.
+- Thompson test positive (no plantarflexion on calf squeeze).
+
+=============================================================================
+SECTION 7: OUTCOME MEASURES AND ASSESSMENT TOOLS
+=============================================================================
+
+7.1 VALIDATED OUTCOME MEASURES
+
+Pain:
+- Numeric Rating Scale (NRS) 0-10: simple, widely used.
+- VAS (Visual Analogue Scale): more sensitive for research.
+
+Function:
+- KOOS (Knee injury and Osteoarthritis Outcome Score): knee.
+- DASH (Disabilities of the Arm, Shoulder and Hand): upper limb.
+- QDASH (shortened version of DASH): 11 items.
+- ODI (Oswestry Disability Index): lumbar spine.
+- HOOS (Hip disability and Osteoarthritis Outcome Score): hip.
+- FAAM (Foot and Ankle Ability Measure): foot/ankle.
+
+Global Assessment:
+- PSFS (Patient-Specific Functional Scale): 3-5 patient-chosen activities, rated 0-10.
+- GPE (Global Perceived Effect): -5 to +5 Likert scale.
+
+Performance Tests:
+- Y-Balance Test (lower quarter): dynamic balance and injury risk.
+- Single-Leg Hop Test: distance, triple hop, crossover hop.
+- Timed-Up-and-Go (TUG): mobility in elderly.
+- 30-second Sit-to-Stand: lower limb strength.
+
+7.2 RANGE OF MOTION NORMS
+
+Joint         | Movement          | Normal ROM
+-------------|-------------------|------------------
+Knee          | Flexion           | 135-150°
+Knee          | Extension         | 0° (full extension)
+Shoulder      | Flexion           | 170-180°
+Shoulder      | Abduction         | 170-180°
+Shoulder      | External Rotation | 60-90°
+Shoulder      | Internal Rotation | 60-90°
+Hip           | Flexion           | 115-125°
+Hip           | Extension         | 10-20°
+Hip           | Abduction         | 40-50°
+Hip           | Internal Rotation | 30-40°
+Hip           | External Rotation | 40-60°
+Ankle         | Dorsiflexion      | 15-20°
+Ankle         | Plantarflexion    | 40-50°
+Lumbar        | Flexion           | 60-80°
+Lumbar        | Extension         | 20-30°
+Cervical      | Flexion           | 45-50°
+Cervical      | Extension         | 60-75°
+Cervical      | Lateral Flexion   | 40-45°
+Cervical      | Rotation          | 70-80°
+
+=============================================================================
+SECTION 8: PATIENT EDUCATION GUIDELINES
+=============================================================================
+
+8.1 PAIN EDUCATION (PAIN NEUROSCIENCE EDUCATION — PNE)
+- Pain is an output of the brain, not always proportional to tissue damage.
+- Chronic pain involves central sensitisation; education reduces fear-avoidance.
+- Explain the difference between 'hurt' (activity-related pain) and 'harm' (tissue damage).
+- Use metaphors: smoke alarm analogy — alarm can be oversensitive, not indicating fire.
+
+8.2 POSTURE AND ERGONOMICS
+- Sitting: Hips and knees at 90°, feet flat on floor, lumbar support, monitor at eye level.
+- Lifting: Hip hinge technique, keep load close to body, engage core before lifting.
+- Sleeping: Side-lying with pillow between knees for lumbar protection; avoid prone sleeping.
+- Standing: Weight evenly distributed, slight knee flexion, avoid locked knees.
+
+8.3 ACTIVITY PACING
+- Boom-bust cycle: Avoid doing too much on good days, leading to flare-up.
+- Use a symptom diary to identify activity tolerance windows.
+- Quota-based pacing: Set time or repetition quotas regardless of pain level.
+- Gradually increase activity quotas each week (5-10% increments).
+
+8.4 SELF-MANAGEMENT STRATEGIES
+- Heat for chronic/sub-acute pain and muscle tension (15-20 min).
+- Ice for acute pain and post-exercise inflammation (15-20 min, protect skin).
+- Transcutaneous Electrical Nerve Stimulation (TENS): 80-100 Hz for pain modulation.
+- Mindfulness and relaxation: reduces catastrophising, improves pain coping.
+- Sleep hygiene: crucial for tissue healing; target 7-9 hours per night.
+
+=============================================================================
+SECTION 9: CONTRAINDICATIONS AND PRECAUTIONS
+=============================================================================
+
+9.1 ABSOLUTE CONTRAINDICATIONS TO EXERCISE
+- Unstable angina or recent MI (<48 hours).
+- Severe aortic stenosis.
+- Uncontrolled arrhythmia causing haemodynamic compromise.
+- Acute pulmonary embolism.
+- Active deep vein thrombosis (DVT).
+- Acute infection with systemic features (fever >38.5°C).
+- Suspected spinal cord compression.
+- Cauda equina syndrome (emergency — refer immediately).
+
+9.2 PRECAUTIONS
+- Osteoporosis: Avoid spinal flexion loading; prefer extension and lateral exercises.
+- Diabetes: Monitor blood glucose before and after exercise; avoid exercise if >15 mmol/L.
+- Hypertension: Avoid Valsalva manoeuvre; monitor BP; isometric exercise caution.
+- Pregnancy: Avoid supine position after 20 weeks; avoid high-impact.
+- Post-surgical: Adhere strictly to surgeon's weight-bearing and ROM restrictions.
+- Corticosteroid injections: Avoid loading the injected structure for 2 weeks.
+
+=============================================================================
+END OF CLINICAL GUIDELINES DOCUMENT
+=============================================================================
+Last updated: 2026 | Based on: NICE guidelines, Cochrane reviews, JOSPT clinical practice guidelines, APA physiotherapy standards.

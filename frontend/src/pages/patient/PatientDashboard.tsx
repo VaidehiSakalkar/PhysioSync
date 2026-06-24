@@ -89,8 +89,10 @@ export function PatientDashboard() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatCard icon={<Dumbbell className="h-5 w-5 text-primary-400" />}
             label="Active Routines" value={routines.length.toString()} />
-          <StatCard icon={<Activity className="h-5 w-5 text-emerald-400" />}
-            label="Sessions Done" value={sessions.length.toString()} />
+          <Link to="/patient/history" className="block">
+            <StatCard icon={<Activity className="h-5 w-5 text-emerald-400" />}
+              label="Sessions Done" value={sessions.length.toString()} clickable />
+          </Link>
           <StatCard icon={<Target className="h-5 w-5 text-amber-400" />}
             label="Avg Accuracy" value={`${avgAccuracy}%`}
             color={avgAccuracy >= 80 ? 'text-emerald-400' : avgAccuracy >= 60 ? 'text-amber-400' : 'text-rose-400'} />
@@ -147,12 +149,22 @@ export function PatientDashboard() {
 
           {/* Upcoming Appointments */}
           <div className="lg:col-span-1">
-            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
-              Upcoming Appointments
-            </h2>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+                Upcoming Appointments
+              </h2>
+              <Link to="/patient/appointments" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">
+                View all →
+              </Link>
+            </div>
             <div className="space-y-3">
               {appointments.length === 0 && (
-                <Card><p className="text-slate-500 text-sm">No upcoming appointments</p></Card>
+                <Card>
+                  <p className="text-slate-500 text-sm mb-2">No upcoming appointments</p>
+                  <Link to="/patient/appointments">
+                    <Button size="sm" variant="secondary" className="w-full justify-center">Book an appointment</Button>
+                  </Link>
+                </Card>
               )}
               {appointments.slice(0, 3).map(a => (
                 <Card key={a.id} padding="sm">
@@ -210,11 +222,11 @@ export function PatientDashboard() {
   )
 }
 
-function StatCard({ icon, label, value, color = 'text-white' }: {
-  icon: React.ReactNode; label: string; value: string; color?: string
+function StatCard({ icon, label, value, color = 'text-white', clickable = false }: {
+  icon: React.ReactNode; label: string; value: string; color?: string; clickable?: boolean
 }) {
   return (
-    <Card padding="sm">
+    <Card padding="sm" hover={clickable} className={clickable ? 'ring-1 ring-transparent hover:ring-primary-500/30' : ''}>
       <div className="flex items-center gap-3">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10">
           {icon}

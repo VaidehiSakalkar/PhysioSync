@@ -58,3 +58,60 @@ Based on the current state of the repository, here is a detailed breakdown of wh
 - **Loading States**: `Spinner` component used throughout; `useAsync` hook for consistent API loading states.
 - **Error Handling**: Axios 401 interceptor redirects to login; `@ExceptionHandler` in Spring controllers returns structured error JSON.
 - **Responsive Layout**: TailwindCSS grid/flex layouts work across mobile and desktop.
+
+---
+
+## 🔴 What's Missing / Remaining
+
+The following items are **not yet implemented** or are **stubbed/incomplete** as of the last commit. Prioritized by impact.
+
+### 🔴 P1 — High Impact (Blockers)
+
+#### 1. RAG Knowledge Base is Empty
+- `ml-service/knowledge_base/` contains only a `.gitkeep` placeholder — **no actual clinical documents**.
+- The `embedder.py` script needs source PDFs/TXTs to build ChromaDB vectors.
+- **Impact**: The `/api/ask` recovery plan generation endpoint returns no meaningful results without embedded documents.
+- **Fix**: Add physiotherapy clinical guidelines (PDF or TXT) to `knowledge_base/` and run `python -m app.langchain.embedder`.
+
+#### 2. Missing `sessionService.ts`
+- `README.md` references `sessionService.ts` in `frontend/src/services/`, but the file does not exist.
+- Session-related API calls (e.g., saving a session log, fetching session history) have no dedicated service layer.
+- **Fix**: Create `frontend/src/services/sessionService.ts` with endpoints for `POST /api/exercises/sessions` and `GET /api/exercises/sessions/{patientId}`.
+
+### 🟡 P2 — Medium Impact (Missing Features)
+
+#### 3. Missing Frontend Pages
+- **Patient Appointment Booking Page**: Patients have no UI to book appointments — only the physio-side view exists.
+- **Patient Session History Detail Page**: `PhysioDashboard` lists sessions but there is no dedicated drilldown page per patient/session.
+
+#### 4. Docker Build Not Validated End-to-End
+- Individual Spring Boot service `Dockerfile`s exist but `docker compose up --build` has not been tested against the full stack.
+- The Jenkins pipeline (`Jenkinsfile`) has never actually run against CI — no green build badge.
+- **Fix**: Run `docker compose -f infra/docker-compose.yml up --build` locally and resolve any image build or networking issues.
+
+### 🟢 P3 — Lower Impact (Quality / Ops)
+
+#### 5. Zero Tests Across the Entire Stack
+- No unit tests in any Spring Boot service (`src/test/` directories are empty stubs).
+- No `pytest` tests for the ML service (pose scorer, RAG chain).
+- No frontend tests (no Vitest/Jest configuration).
+- **Fix**: At minimum, add auth flow tests for `patient-service` and angle scoring tests for `ml-service/app/pose/scorer.py`.
+
+#### 6. `.env.example` Not Documented
+- `.env.example` lists variables but provides no descriptions or instructions for which secrets are mandatory to run the stack.
+- Required secrets include: Gemini API key, JWT secret, mail credentials (host/port/user/pass), MinIO access/secret keys.
+- **Fix**: Annotate each variable in `.env.example` with an inline comment explaining its purpose and where to obtain it.
+
+---
+
+## 📋 Remaining Work Summary
+
+| # | Item | Priority | Effort |
+|---|------|----------|--------|
+| 1 | Add clinical docs to RAG knowledge base + re-embed | 🔴 High | Low |
+| 2 | Create `sessionService.ts` | 🔴 High | Low |
+| 3 | Patient appointment booking page | 🟡 Medium | Medium |
+| 4 | Patient session history detail page | 🟡 Medium | Medium |
+| 5 | Validate full Docker Compose build | 🟡 Medium | Medium |
+| 6 | Write unit tests (backend + ML + frontend) | 🟢 Low | High |
+| 7 | Annotate `.env.example` with descriptions | 🟢 Low | Low |
