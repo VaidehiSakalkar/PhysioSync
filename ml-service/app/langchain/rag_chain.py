@@ -13,6 +13,7 @@ def init_vectorstore() -> None:
     """Called once at app startup to connect to ChromaDB."""
     global _qa_chain
     try:
+        import chromadb
         from langchain_community.vectorstores import Chroma
         from langchain_community.embeddings import HuggingFaceEmbeddings
         from langchain.chains import RetrievalQA
@@ -24,13 +25,11 @@ def init_vectorstore() -> None:
         embeddings = HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2"
         )
+        chroma_client = chromadb.HttpClient(host=chroma_host, port=chroma_port)
         vectordb = Chroma(
             collection_name="physio_knowledge",
             embedding_function=embeddings,
-            client_settings={
-                "chroma_server_host": chroma_host,
-                "chroma_server_http_port": chroma_port,
-            },
+            client=chroma_client,
         )
         llm = ChatGoogleGenerativeAI(
             model="gemini-pro",

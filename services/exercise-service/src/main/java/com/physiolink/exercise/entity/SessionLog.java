@@ -1,6 +1,5 @@
 package com.physiolink.exercise.entity;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
