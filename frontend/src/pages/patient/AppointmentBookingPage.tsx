@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { patientService } from '../../services/patientService'
 import { appointmentService, Appointment } from '../../services/appointmentService'
 import { Header } from '../../components/layout/Header'
@@ -89,6 +89,15 @@ export function AppointmentBookingPage() {
         durationMinutes: duration,
         notes: notes.trim() || undefined,
       })
+      
+      // (The state 'availablePhysios' is populated if they need to choose one. We check if they didn't have a physioId initially)
+      // Actually we just update it anyway if it succeeds
+      try {
+        await patientService.updateMyProfile({ assignedPhysioId: physioId })
+      } catch (e) {
+        console.error("Could not assign physio", e)
+      }
+      
       setAppointments(prev => [appt, ...prev])
       setShowForm(false)
       setNotes('')
@@ -349,11 +358,11 @@ function AppointmentCard({ appt, faded = false }: { appt: Appointment; faded?: b
         {/* Status + Video button */}
         <div className="flex items-center gap-2 shrink-0">
           {appt.videoRoomId && (appt.status === 'SCHEDULED' || appt.status === 'CONFIRMED') && (
-            <a href={`/video/${appt.videoRoomId}`}>
+            <Link to={`/video/${appt.videoRoomId}`}>
               <Button size="sm" variant="secondary" icon={<Video className="h-3.5 w-3.5" />}>
                 Join
               </Button>
-            </a>
+            </Link>
           )}
           <Badge color={STATUS_COLOR[appt.status]}>
             {appt.status}

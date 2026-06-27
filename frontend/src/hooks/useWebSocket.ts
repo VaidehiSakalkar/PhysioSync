@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 
-const ML_WS_URL = import.meta.env.VITE_ML_WS_URL ?? 'ws://localhost:8000/ws/pose'
+const ML_WS_BASE = import.meta.env.VITE_ML_WS_URL ?? 'ws://localhost:8000'
 
 export type PoseFrame = {
   detected: boolean
@@ -21,7 +21,10 @@ export function useWebSocket(
 
   const connect = useCallback(() => {
     if (!enabled) return
-    const ws = new WebSocket(`${ML_WS_URL}?exercise_id=${exerciseId}`)
+    
+    // Construct URL robustly to prevent /ws/pose/ws/pose duplication
+    const baseUrl = ML_WS_BASE.replace(/\/ws\/pose\/?$/, '').replace(/\/$/, '')
+    const ws = new WebSocket(`${baseUrl}/ws/pose?exercise_id=${exerciseId}`)
     wsRef.current = ws
 
     ws.onmessage = (ev) => {

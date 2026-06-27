@@ -50,11 +50,13 @@ public class UserService {
 
     public PatientProfileResponse updatePatientProfile(UUID patientId,
                                                        String medicalHistory,
-                                                       String emergencyContact) {
+                                                       String emergencyContact,
+                                                       UUID assignedPhysioId) {
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
         if (medicalHistory != null)   patient.setMedicalHistory(medicalHistory);
         if (emergencyContact != null) patient.setEmergencyContact(emergencyContact);
+        if (assignedPhysioId != null) patient.setAssignedPhysioId(assignedPhysioId);
         patientRepo.save(patient);
         return toPatientProfile(patient);
     }

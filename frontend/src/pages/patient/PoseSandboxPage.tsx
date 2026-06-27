@@ -38,12 +38,20 @@ export function PoseSandboxPage() {
 
       captureIntervalRef.current = setInterval(() => {
         if (!videoRef.current || !canvasRef.current) return
-        const ctx = canvasRef.current.getContext('2d')
+        
+        const vw = videoRef.current.videoWidth
+        const vh = videoRef.current.videoHeight
+        if (!vw || !vh) return
+        
+        // Capture frame using an offscreen canvas so we don't overwrite the visible landmarks
+        const offscreenCanvas = document.createElement('canvas')
+        offscreenCanvas.width = vw
+        offscreenCanvas.height = vh
+        const ctx = offscreenCanvas.getContext('2d')
         if (!ctx) return
-        canvasRef.current.width  = videoRef.current.videoWidth
-        canvasRef.current.height = videoRef.current.videoHeight
+        
         ctx.drawImage(videoRef.current, 0, 0)
-        const base64 = canvasRef.current.toDataURL('image/jpeg', 0.6).split(',')[1]
+        const base64 = offscreenCanvas.toDataURL('image/jpeg', 0.6).split(',')[1]
         sendFrame(base64)
       }, CAPTURE_INTERVAL_MS)
     } catch {
@@ -73,7 +81,11 @@ export function PoseSandboxPage() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const { width: w, height: h } = canvas
+    const w = video.videoWidth
+    const h = video.videoHeight
+    canvas.width = w
+    canvas.height = h
+    ctx.clearRect(0, 0, w, h)
 
     frame.landmarks.forEach(lm => {
       if (lm.visibility < 0.5) return

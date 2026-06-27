@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { patientService, PatientProfile } from '../../services/patientService'
 import { appointmentService, Appointment } from '../../services/appointmentService'
 import { Header } from '../../components/layout/Header'
@@ -181,11 +181,11 @@ function AppointmentCard({
           
           <div className="flex items-center gap-2">
             {appt.videoRoomId && isUpcoming && (
-              <a href={`/video/${appt.videoRoomId}`}>
+              <Link to={`/video/${appt.videoRoomId}`}>
                 <Button size="sm" variant="secondary" icon={<Video className="h-3.5 w-3.5" />}>
                   Join Video
                 </Button>
-              </a>
+              </Link>
             )}
 
             {isUpcoming && onUpdateStatus && (

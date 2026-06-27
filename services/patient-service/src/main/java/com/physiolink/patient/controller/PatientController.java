@@ -36,10 +36,14 @@ public class PatientController {
             Authentication auth,
             @RequestBody Map<String, String> body) {
         UUID userId = UUID.fromString(auth.getName());
+        UUID assignedPhysioId = body.containsKey("assignedPhysioId") 
+                ? UUID.fromString(body.get("assignedPhysioId")) : null;
+        
         return ResponseEntity.ok(userService.updatePatientProfile(
                 userId,
                 body.get("medicalHistory"),
-                body.get("emergencyContact")));
+                body.get("emergencyContact"),
+                assignedPhysioId));
     }
 
     /** GET /api/patients/{id} — physio looks up a specific patient */

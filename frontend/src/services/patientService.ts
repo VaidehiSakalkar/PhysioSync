@@ -13,7 +13,7 @@ export interface PatientProfile {
 export const patientService = {
   getMyProfile: () => api.get<PatientProfile>('/patients/me').then(r => r.data),
 
-  updateMyProfile: (data: Partial<Pick<PatientProfile, 'medicalHistory' | 'emergencyContact'>>) =>
+  updateMyProfile: (data: Partial<Pick<PatientProfile, 'medicalHistory' | 'emergencyContact' | 'assignedPhysioId'>>) =>
     api.put<PatientProfile>('/patients/me', data).then(r => r.data),
 
   getPatient: (id: string) => api.get<PatientProfile>(`/patients/${id}`).then(r => r.data),

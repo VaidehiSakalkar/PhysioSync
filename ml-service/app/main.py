@@ -7,7 +7,7 @@ FastAPI application with:
 """
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.pose import ws_handler
@@ -43,7 +43,7 @@ app.add_middleware(
 
 # ── WebSocket — Pose Session ──────────────────────────────────────────────────
 @app.websocket("/ws/pose")
-async def pose_websocket(websocket, exercise_id: str = ""):
+async def pose_websocket(websocket: WebSocket, exercise_id: str = ""):
     """
     WebSocket endpoint for real-time pose feedback.
     Client sends: {"frame": "<base64-jpeg>"}
