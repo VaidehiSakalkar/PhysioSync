@@ -37,7 +37,6 @@ function formatDuration(seconds?: number): string {
 
 function SessionDetail({ session, onClose }: { session: SessionLog; onClose: () => void }) {
   const repAngles = session.repAngles ?? []
-  const target = 90 // placeholder — a real implementation would fetch from exercise data
 
   const chartData = {
     labels: repAngles.map((_, i) => `Rep ${i + 1}`),

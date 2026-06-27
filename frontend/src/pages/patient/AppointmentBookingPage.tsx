@@ -22,11 +22,6 @@ const STATUS_COLOR: Record<Appointment['status'], 'good' | 'info' | 'neutral' | 
   CANCELLED:  'danger',
 }
 
-function toLocalDatetimeInput(iso: string) {
-  // ISO → 'YYYY-MM-DDTHH:mm'
-  return iso.slice(0, 16)
-}
-
 function getMinDatetime() {
   const d = new Date()
   d.setMinutes(d.getMinutes() + 30) // at least 30 min from now

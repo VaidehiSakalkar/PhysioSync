@@ -8,7 +8,7 @@ import { Card } from '../../components/ui/Card'
 import { Badge } from '../../components/ui/Badge'
 import { Spinner } from '../../components/ui/Spinner'
 import { Button } from '../../components/ui/Button'
-import { Activity, Calendar, Dumbbell, TrendingUp, ChevronRight, Target, FileText } from 'lucide-react'
+import { Activity, Calendar, Dumbbell, ChevronRight, Target, FileText } from 'lucide-react'
 import {
   Chart as ChartJS,
   CategoryScale, LinearScale, PointElement, LineElement,
