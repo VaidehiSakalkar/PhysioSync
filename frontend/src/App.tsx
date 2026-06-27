@@ -8,6 +8,7 @@ import { AppointmentBookingPage }   from './pages/patient/AppointmentBookingPage
 import { SessionHistoryPage }       from './pages/patient/SessionHistoryPage'
 import { PoseSandboxPage }          from './pages/patient/PoseSandboxPage'
 import { PhysioDashboard }          from './pages/physio/PhysioDashboard'
+import { PhysioAppointmentsPage }   from './pages/physio/PhysioAppointmentsPage'
 import { VideoConsultationPage }    from './pages/video/VideoConsultationPage'
 
 /** Simple auth guard — reads JWT from localStorage */
@@ -48,6 +49,9 @@ export default function App() {
           {/* Physio routes */}
           <Route path="/physio" element={
             <PrivateRoute role="PHYSIO"><PhysioDashboard /></PrivateRoute>
+          } />
+          <Route path="/physio/appointments" element={
+            <PrivateRoute role="PHYSIO"><PhysioAppointmentsPage /></PrivateRoute>
           } />
 
           {/* Shared video route */}
