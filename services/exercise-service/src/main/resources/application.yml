@@ -4,11 +4,13 @@ server:
 spring:
   application:
     name: exercise-service
+  config:
+    import: optional:file:../../.env[.properties]
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/physiolink}
-    username: ${SPRING_DATASOURCE_USERNAME:physio}
-    password: ${SPRING_DATASOURCE_PASSWORD:physio123}
+    url: ${SPRING_DATASOURCE_URL:${POSTGRES_URL:jdbc:postgresql://localhost:5432/physiolink}}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:physio}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:physio123}}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -31,3 +33,7 @@ management:
     web:
       exposure:
         include: health,info
+
+# ── JWT (used to verify tokens) ────────────────────────────────────────────────
+jwt:
+  secret: ${JWT_SECRET:dev-insecure-secret-change-me}

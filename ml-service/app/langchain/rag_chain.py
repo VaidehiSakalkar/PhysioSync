@@ -32,7 +32,7 @@ def init_vectorstore() -> None:
             client=chroma_client,
         )
         llm = ChatGoogleGenerativeAI(
-            model="gemini-pro",
+            model="gemini-2.5-flash",
             google_api_key=os.getenv("GEMINI_API_KEY", ""),
         )
         _qa_chain = RetrievalQA.from_chain_type(

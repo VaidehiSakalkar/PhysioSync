@@ -153,10 +153,10 @@ class TestScoreFrame:
         # We need angle < t_min for 'more'. Use a wide range that sits above t_max.
         # Create a near-zero angle: a, b, c in same direction
         lms = list(make_landmarks_straight_knee())
-        # Bend so angle is very small — ankle far to the side
+        # Bend so angle is very small — ankle pointing towards hip
         lms[23] = make_landmark(0.5, 0.3)
         lms[25] = make_landmark(0.5, 0.6)
-        lms[27] = make_landmark(0.51, 0.61)   # almost same direction → tiny angle
+        lms[27] = make_landmark(0.51, 0.31)   # almost same direction as hip → tiny angle
         result = score_frame(lms, self._exercise(t_min=80.0, t_max=120.0))
         # angle < t_min → "more"
         assert "more" in result["feedback"] or result["inRange"] is True

@@ -4,12 +4,14 @@ server:
 spring:
   application:
     name: patient-service
+  config:
+    import: optional:file:../../.env[.properties]
 
   # ── PostgreSQL ─────────────────────────────────────────────────────────────
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/physiolink}
-    username: ${SPRING_DATASOURCE_USERNAME:physio}
-    password: ${SPRING_DATASOURCE_PASSWORD:physio123}
+    url: ${SPRING_DATASOURCE_URL:${POSTGRES_URL:jdbc:postgresql://localhost:5432/physiolink}}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:physio}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:physio123}}
     driver-class-name: org.postgresql.Driver
 
   jpa:

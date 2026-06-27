@@ -27,7 +27,7 @@ def generate_plan(condition: str, session_history: list, current_exercises: list
         from langchain_google_genai import ChatGoogleGenerativeAI
 
         llm = ChatGoogleGenerativeAI(
-            model="gemini-pro",
+            model="gemini-2.5-flash",
             google_api_key=os.getenv("GEMINI_API_KEY", ""),
         )
 
