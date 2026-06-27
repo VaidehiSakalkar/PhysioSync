@@ -13,7 +13,7 @@ import { useToast } from '../../components/ui/Toast'
 import { Users, Search, Activity, FileText, Plus } from 'lucide-react'
 
 export function PhysioDashboard() {
-  const { name, userId } = useAuth()
+  const { name } = useAuth()
   const { toast } = useToast()
 
   const [patients, setPatients] = useState<PatientProfile[]>([])

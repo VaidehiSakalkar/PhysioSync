@@ -178,6 +178,8 @@ services:
       dockerfile: Dockerfile
     container_name: physiolink-video
     restart: unless-stopped
+    ports:
+      - "8084:8084"
     environment:
       MINIO_ENDPOINT: ${MINIO_ENDPOINT:-http://minio:9000}
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
@@ -186,6 +188,7 @@ services:
       - minio
     networks:
       - physiolink-net
+      - physiolink-public
 
   # ── ML Service ──────────────────────────────────────────────────────────────
   ml-service:

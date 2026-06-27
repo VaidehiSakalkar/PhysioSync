@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
-import { Activity, LogOut, User, Calendar } from 'lucide-react'
+import { Activity, LogOut, User } from 'lucide-react'
 import { Button } from '../ui/Button'
 
 export function Header() {
