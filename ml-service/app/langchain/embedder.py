@@ -41,13 +41,12 @@ def embed_knowledge_base() -> None:
     chroma_host = os.getenv("CHROMA_HOST", "localhost")
     chroma_port = int(os.getenv("CHROMA_PORT", "8001"))
 
+    import chromadb
+    chroma_client = chromadb.HttpClient(host=chroma_host, port=chroma_port)
     vectordb = Chroma(
         collection_name="physio_knowledge",
         embedding_function=embeddings,
-        client_settings={
-            "chroma_server_host": chroma_host,
-            "chroma_server_http_port": chroma_port,
-        },
+        client=chroma_client,
     )
     vectordb.add_documents(chunks)
     logger.info("Embedded %d chunks into ChromaDB @ %s:%s ✓", len(chunks), chroma_host, chroma_port)

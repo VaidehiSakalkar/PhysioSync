@@ -99,7 +99,7 @@ services:
 
   # ── ChromaDB ────────────────────────────────────────────────────────────────
   chromadb:
-    image: chromadb/chroma:latest
+    image: chromadb/chroma:0.5.0
     container_name: physiolink-chromadb
     restart: unless-stopped
     volumes:
