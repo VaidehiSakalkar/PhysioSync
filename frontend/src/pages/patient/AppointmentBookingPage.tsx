@@ -39,6 +39,7 @@ export function AppointmentBookingPage() {
 
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [physioId, setPhysioId] = useState<string | null>(null)
+  const [availablePhysios, setAvailablePhysios] = useState<{id: string, name: string}[]>([])
   const [loading, setLoading]   = useState(true)
 
   // Booking form state
@@ -52,8 +53,10 @@ export function AppointmentBookingPage() {
     Promise.all([
       patientService.getMyProfile(),
       appointmentService.getMyAppointments(),
-    ]).then(([profile, appts]) => {
+      patientService.getAllPhysios(),
+    ]).then(([profile, appts, physios]) => {
       setPhysioId(profile.assignedPhysioId ?? null)
+      setAvailablePhysios(physios)
       setAppointments(appts.sort(
         (a, b) => new Date(b.scheduledAt).getTime() - new Date(a.scheduledAt).getTime()
       ))
@@ -71,7 +74,7 @@ export function AppointmentBookingPage() {
 
   const handleBook = async () => {
     if (!physioId) {
-      toast('You are not assigned to a physiotherapist yet.', 'error')
+      toast('Please select a physiotherapist.', 'error')
       return
     }
     if (!scheduledAt) {
@@ -127,7 +130,7 @@ export function AppointmentBookingPage() {
                 id="book-appointment-btn"
                 onClick={() => setShowForm(true)}
                 icon={<Plus className="h-4 w-4" />}
-                disabled={!physioId}
+                disabled={!physioId && availablePhysios.length === 0}
               >
                 Book Appointment
               </Button>
@@ -136,11 +139,11 @@ export function AppointmentBookingPage() {
         </div>
 
         {/* No physio assigned warning */}
-        {!physioId && (
+        {!physioId && availablePhysios.length === 0 && (
           <div className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4">
             <AlertCircle className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
             <p className="text-sm text-amber-300">
-              You are not yet assigned to a physiotherapist. Please contact your clinic to get assigned before booking.
+              No physiotherapists available at the moment. Please try again later.
             </p>
           </div>
         )}
@@ -165,6 +168,29 @@ export function AppointmentBookingPage() {
               </div>
 
               <div className="space-y-5">
+                {/* Physio Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="appt-physio">
+                    Select Physiotherapist
+                  </label>
+                  <div className="relative">
+                    <Stethoscope className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 pointer-events-none" />
+                    <select
+                      id="appt-physio"
+                      value={physioId || ''}
+                      onChange={e => setPhysioId(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm
+                        focus:outline-none focus:border-primary-500/60 focus:ring-1 focus:ring-primary-500/30
+                        appearance-none transition-colors"
+                    >
+                      <option value="" disabled className="text-slate-800">Select a physio...</option>
+                      {availablePhysios.map(p => (
+                        <option key={p.id} value={p.id} className="text-slate-800">{p.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 {/* Date & Time */}
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="appt-datetime">

@@ -6,6 +6,7 @@ import { PatientDashboard }         from './pages/patient/PatientDashboard'
 import { SessionPage }              from './pages/patient/SessionPage'
 import { AppointmentBookingPage }   from './pages/patient/AppointmentBookingPage'
 import { SessionHistoryPage }       from './pages/patient/SessionHistoryPage'
+import { PoseSandboxPage }          from './pages/patient/PoseSandboxPage'
 import { PhysioDashboard }          from './pages/physio/PhysioDashboard'
 import { VideoConsultationPage }    from './pages/video/VideoConsultationPage'
 
@@ -33,6 +34,9 @@ export default function App() {
           } />
           <Route path="/patient/session/:exerciseId" element={
             <PrivateRoute role="PATIENT"><SessionPage /></PrivateRoute>
+          } />
+          <Route path="/patient/sandbox" element={
+            <PrivateRoute role="PATIENT"><PoseSandboxPage /></PrivateRoute>
           } />
           <Route path="/patient/appointments" element={
             <PrivateRoute role="PATIENT"><AppointmentBookingPage /></PrivateRoute>

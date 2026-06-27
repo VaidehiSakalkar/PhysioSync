@@ -41,6 +41,13 @@ public class UserService {
                 .toList();
     }
 
+    public List<UserResponse> getAllPhysios() {
+        return userRepo.findByRole(User.Role.PHYSIO)
+                .stream()
+                .map(this::toUserResponse)
+                .toList();
+    }
+
     public PatientProfileResponse updatePatientProfile(UUID patientId,
                                                        String medicalHistory,
                                                        String emergencyContact) {

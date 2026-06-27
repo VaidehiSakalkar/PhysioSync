@@ -36,6 +36,12 @@ gateway:
     - prefix: /api/video
       target: http://${VIDEO_SERVICE_HOST:localhost}:8084
 
+    - prefix: /ws/pose
+      target: ws://${ML_SERVICE_HOST:localhost}:8000
+
+    - prefix: /api/ask
+      target: http://${ML_SERVICE_HOST:localhost}:8000
+
   rate-limit:
     replenish-rate: 10   # tokens added per second (sustained throughput)
     burst-capacity: 20   # maximum token accumulation (allows short bursts)

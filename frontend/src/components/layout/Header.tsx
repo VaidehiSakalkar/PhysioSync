@@ -34,6 +34,7 @@ export function Header() {
               <>
                 <NavLink to="/patient">Dashboard</NavLink>
                 <NavLink to="/patient/appointments">Appointments</NavLink>
+                <NavLink to="/patient/sandbox">Pose Sandbox</NavLink>
               </>
             )}
             {role === 'PHYSIO' && (

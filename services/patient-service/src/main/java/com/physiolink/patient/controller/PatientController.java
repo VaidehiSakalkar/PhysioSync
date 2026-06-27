@@ -64,4 +64,11 @@ public class PatientController {
         UUID userId = UUID.fromString(auth.getName());
         return ResponseEntity.ok(userService.getProfile(userId));
     }
+
+    /** GET /api/physios — list all physios */
+    @GetMapping("/api/physios")
+    @PreAuthorize("hasRole('PATIENT') or hasRole('PHYSIO')")
+    public ResponseEntity<List<UserResponse>> getAllPhysios() {
+        return ResponseEntity.ok(userService.getAllPhysios());
+    }
 }

@@ -21,4 +21,6 @@ export const patientService = {
   getPhysioPatients: () => api.get<PatientProfile[]>('/physios/patients').then(r => r.data),
 
   getPhysioProfile: () => api.get('/physios/me').then(r => r.data),
+
+  getAllPhysios: () => api.get<{id: string, name: string}[]>('/physios').then(r => r.data),
 }
