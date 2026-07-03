@@ -19,7 +19,7 @@ import java.util.List;
  * Routes are evaluated in declaration order — list more-specific prefixes first.
  */
 @Component
-@ConfigurationProperties(prefix = "gateway")
+@ConfigurationProperties(prefix = "gateway")//tells spring to read all paths under gateway and store then in this class
 public class GatewayRouteProperties {
 
     private List<Route> routes = new ArrayList<>();

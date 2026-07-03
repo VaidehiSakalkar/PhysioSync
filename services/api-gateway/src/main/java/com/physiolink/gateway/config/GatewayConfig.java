@@ -59,11 +59,11 @@ public class GatewayConfig {
         config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
+        config.setAllowCredentials(true); //blocks the passing of cookies or other credentials through headers
+        config.setMaxAge(3600L);//to generate a preflight response
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config);//cors is applied to every endpoint
         return new CorsFilter(source);
     }
 
@@ -71,6 +71,7 @@ public class GatewayConfig {
     // Spring Boot auto-registers @Component filters at Integer.MAX_VALUE (last).
     // FilterRegistrationBean lets us control order explicitly.
 
+    //setOrder is to set the order of the filter
     @Bean
     public FilterRegistrationBean<RateLimitFilter> rateLimitRegistration(RateLimitFilter filter) {
         var bean = new FilterRegistrationBean<>(filter);

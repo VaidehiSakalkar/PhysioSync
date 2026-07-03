@@ -28,7 +28,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -79,7 +79,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -98,9 +98,7 @@ services:
 
   # ── Spring Boot Services ────────────────────────────────────────────────────
   api-gateway:
-    build:
-      context: ../services/api-gateway
-      dockerfile: Dockerfile
+    image: sagar8/infra-api-gateway:latest
     container_name: physiolink-gateway
     restart: unless-stopped
     ports:
@@ -109,6 +107,11 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      PATIENT_SERVICE_HOST: patient-service
+      EXERCISE_SERVICE_HOST: exercise-service
+      APPOINTMENT_SERVICE_HOST: appointment-service
+      VIDEO_SERVICE_HOST: video-service
+      ML_SERVICE_HOST: ml-service
     depends_on:
       redis:
         condition: service_healthy
@@ -117,9 +120,7 @@ services:
       - physiolink-public
 
   patient-service:
-    build:
-      context: ../services/patient-service
-      dockerfile: Dockerfile
+    image: sagar8/infra-patient-service:latest
     container_name: physiolink-patient
     restart: unless-stopped
     environment:
@@ -135,9 +136,7 @@ services:
       - physiolink-net
 
   exercise-service:
-    build:
-      context: ../services/exercise-service
-      dockerfile: Dockerfile
+    image: sagar8/infra-exercise-service:latest
     container_name: physiolink-exercise
     restart: unless-stopped
     environment:
@@ -152,9 +151,7 @@ services:
       - physiolink-net
 
   appointment-service:
-    build:
-      context: ../services/appointment-service
-      dockerfile: Dockerfile
+    image: sagar8/infra-appointment-service:latest
     container_name: physiolink-appointment
     restart: unless-stopped
     environment:
@@ -173,9 +170,7 @@ services:
       - physiolink-net
 
   video-service:
-    build:
-      context: ../services/video-service
-      dockerfile: Dockerfile
+    image: sagar8/infra-video-service:latest
     container_name: physiolink-video
     restart: unless-stopped
     ports:
@@ -192,9 +187,7 @@ services:
 
   # ── ML Service ──────────────────────────────────────────────────────────────
   ml-service:
-    build:
-      context: ../ml-service
-      dockerfile: Dockerfile
+    image: sagar8/infra-ml-service:latest
     container_name: physiolink-ml
     restart: unless-stopped
     ports:
@@ -214,13 +207,7 @@ services:
 
   # ── Frontend ────────────────────────────────────────────────────────────────
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
-      args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
-        VITE_ML_WS_URL: ${VITE_ML_WS_URL:-ws://localhost:8000}
-        VITE_VIDEO_WS_URL: ${VITE_VIDEO_WS_URL:-ws://localhost:8084}
+    image: sagar8/infra-frontend:latest
     container_name: physiolink-frontend
     restart: unless-stopped
     ports:
