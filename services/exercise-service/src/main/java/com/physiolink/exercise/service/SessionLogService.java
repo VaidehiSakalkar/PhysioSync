@@ -4,6 +4,8 @@ import com.physiolink.exercise.entity.SessionLog;
 import com.physiolink.exercise.kafka.SessionCompletedEvent;
 import com.physiolink.exercise.kafka.SessionEventProducer;
 import com.physiolink.exercise.repository.SessionLogRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,11 +29,13 @@ public class SessionLogService {
         return sessionLogRepo.findByPatientIdOrderBySessionTimeDesc(patientId, PageRequest.of(page, size));
     }
 
+    @Cacheable(value = "recentSessionLogsByPatient", key = "#patientId")
     public List<SessionLog> getRecentByPatient(UUID patientId) {
         return sessionLogRepo.findTop10ByPatientIdOrderBySessionTimeDesc(patientId);
     }
 
     @Transactional
+    @CacheEvict(value = "recentSessionLogsByPatient", key = "#log.patientId")
     public SessionLog save(SessionLog log) {
         SessionLog saved = sessionLogRepo.save(log);
 

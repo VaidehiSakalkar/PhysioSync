@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "routines")
 @Getter @Setter @NoArgsConstructor
-public class Routine {
+public class Routine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

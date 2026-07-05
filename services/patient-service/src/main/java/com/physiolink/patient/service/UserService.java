@@ -6,6 +6,10 @@ import com.physiolink.patient.entity.Patient;
 import com.physiolink.patient.entity.User;
 import com.physiolink.patient.repository.PatientRepository;
 import com.physiolink.patient.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,18 +26,21 @@ public class UserService {
         this.patientRepo = patientRepo;
     }
 
+    @Cacheable(value = "userProfiles", key = "#userId")
     public UserResponse getProfile(UUID userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return toUserResponse(user);
     }
 
+    @Cacheable(value = "patientProfiles", key = "#patientId")
     public PatientProfileResponse getPatientProfile(UUID patientId) {
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
         return toPatientProfile(patient);
     }
 
+    @Cacheable(value = "patientsByPhysio", key = "#physioId")
     public List<PatientProfileResponse> getPatientsForPhysio(UUID physioId) {
         return patientRepo.findByAssignedPhysioId(physioId)
                 .stream()
@@ -41,6 +48,7 @@ public class UserService {
                 .toList();
     }
 
+    @Cacheable(value = "allPhysios")
     public List<UserResponse> getAllPhysios() {
         return userRepo.findByRole(User.Role.PHYSIO)
                 .stream()
@@ -48,6 +56,8 @@ public class UserService {
                 .toList();
     }
 
+    @CachePut(value = "patientProfiles", key = "#patientId")
+    @CacheEvict(value = "patientsByPhysio", allEntries = true)
     public PatientProfileResponse updatePatientProfile(UUID patientId,
                                                        String medicalHistory,
                                                        String emergencyContact,

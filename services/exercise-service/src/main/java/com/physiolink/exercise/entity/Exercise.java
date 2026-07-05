@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "exercises")
 @Getter @Setter @NoArgsConstructor
-public class Exercise {
+public class Exercise implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

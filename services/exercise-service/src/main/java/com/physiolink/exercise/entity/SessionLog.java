@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "session_logs")
 @Getter @Setter @NoArgsConstructor
-public class SessionLog {
+public class SessionLog implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

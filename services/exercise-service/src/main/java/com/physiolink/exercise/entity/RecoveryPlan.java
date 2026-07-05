@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "recovery_plans")
 @Getter @Setter @NoArgsConstructor
-public class RecoveryPlan {
+public class RecoveryPlan implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

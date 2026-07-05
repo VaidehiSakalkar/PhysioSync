@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Scheduled service that scans upcoming appointments and sends email reminders.
- * Redis is used as a deduplication store so we never send the same reminder twice.
+ * Redis is used as a deduplication store so we never send the same reminder
+ * twice.
  */
 @Service
 public class ReminderService {
@@ -31,9 +32,9 @@ public class ReminderService {
     private final int windowHours;
 
     public ReminderService(AppointmentRepository appointmentRepo,
-                           EmailService emailService,
-                           StringRedisTemplate redis,
-                           @Value("${reminder.window-hours:24}") int windowHours) {
+            EmailService emailService,
+            StringRedisTemplate redis,
+            @Value("${reminder.window-hours:24}") int windowHours) {
         this.appointmentRepo = appointmentRepo;
         this.emailService = emailService;
         this.redis = redis;
@@ -51,7 +52,7 @@ public class ReminderService {
         for (Appointment appt : upcoming) {
             String redisKey = REDIS_KEY_PREFIX + appt.getId();
             if (Boolean.TRUE.equals(redis.hasKey(redisKey))) {
-                continue;  // already sent
+                continue; // already sent
             }
             // Mark as sent first (idempotency — TTL slightly longer than window)
             redis.opsForValue().set(redisKey, "1", windowHours + 1, TimeUnit.HOURS);

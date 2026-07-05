@@ -2,6 +2,8 @@ package com.physiolink.exercise.service;
 
 import com.physiolink.exercise.entity.RecoveryPlan;
 import com.physiolink.exercise.repository.RecoveryPlanRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +19,13 @@ public class RecoveryPlanService {
         this.planRepo = planRepo;
     }
 
+    @Cacheable(value = "recoveryPlansByPatient", key = "#patientId")
     public List<RecoveryPlan> getByPatient(UUID patientId) {
         return planRepo.findByPatientIdOrderByGeneratedAtDesc(patientId);
     }
 
     @Transactional
+    @CacheEvict(value = "recoveryPlansByPatient", key = "#plan.patientId")
     public RecoveryPlan save(RecoveryPlan plan) {
         return planRepo.save(plan);
     }
