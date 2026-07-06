@@ -11,23 +11,29 @@ docker compose -f infra/docker-compose.dev.yml up -d
 echo "Waiting a few seconds for infrastructure to initialize..."
 sleep 5
 
+# Load environment variables from .env to override cached terminal variables
+if [ -f ".env" ]; then
+  echo "Loading environment variables from .env..."
+  set -a && source .env && set +a
+fi
+
 # Create a logs directory
 mkdir -p logs
 
 echo "Starting Spring Boot Services (logs will be saved to logs/)..."
-(cd services/api-gateway && ./mvnw spring-boot:run > ../../logs/api-gateway.log 2>&1) &
+(cd services/api-gateway && mvn spring-boot:run > ../../logs/api-gateway.log 2>&1) &
 PID_API=$!
 
-(cd services/patient-service && ./mvnw spring-boot:run > ../../logs/patient-service.log 2>&1) &
+(cd services/patient-service && mvn spring-boot:run > ../../logs/patient-service.log 2>&1) &
 PID_PATIENT=$!
 
-(cd services/exercise-service && ./mvnw spring-boot:run > ../../logs/exercise-service.log 2>&1) &
+(cd services/exercise-service && mvn spring-boot:run > ../../logs/exercise-service.log 2>&1) &
 PID_EXERCISE=$!
 
-(cd services/appointment-service && ./mvnw spring-boot:run > ../../logs/appointment-service.log 2>&1) &
+(cd services/appointment-service && mvn spring-boot:run > ../../logs/appointment-service.log 2>&1) &
 PID_APPOINT=$!
 
-(cd services/video-service && ./mvnw spring-boot:run > ../../logs/video-service.log 2>&1) &
+(cd services/video-service && mvn spring-boot:run > ../../logs/video-service.log 2>&1) &
 PID_VIDEO=$!
 
 echo "Starting ML Service..."
