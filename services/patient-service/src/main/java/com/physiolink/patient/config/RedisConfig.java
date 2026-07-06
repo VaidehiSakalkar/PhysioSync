@@ -5,7 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -18,35 +23,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
 /**
- * Redis cache configuration that uses JSON serialization instead of Java's default
- * JDK serialization. This allows caching of DTOs (records, etc.) without requiring
- * them to implement {@link java.io.Serializable}.
+ * Redis cache configuration using JSON serialization and a resilient error handler.
  *
- * <p>Fixes: {@code java.io.NotSerializableException: com.physiolink.patient.dto.UserResponse}
- * thrown when Spring's Redis cache attempted to serialize {@code UserResponse} and
- * {@code PatientProfileResponse} (both Java records) using JDK serialization.</p>
+ * <p>Fixes: {@code java.io.NotSerializableException} when caching DTOs (records) that
+ * don't implement {@link java.io.Serializable}.</p>
+ *
+ * <p>The {@link ResilientCacheErrorHandler} swallows deserialization errors on stale
+ * cache entries, evicts the corrupt key, and falls back to the real data source — so
+ * the app never crashes due to incompatible Redis data formats.</p>
  */
 @Configuration
 @EnableCaching
-public class RedisConfig {
+public class RedisConfig implements CachingConfigurer {
 
-    /**
-     * Builds a Jackson {@link ObjectMapper} suitable for Redis value serialization.
-     * <ul>
-     *   <li>Registers {@link JavaTimeModule} so {@code LocalDate} / {@code LocalDateTime}
-     *       fields serialize correctly.</li>
-     *   <li>Disables {@link SerializationFeature#WRITE_DATES_AS_TIMESTAMPS} so dates are
-     *       written as ISO-8601 strings rather than numeric arrays.</li>
-     *   <li>Enables default typing so that the concrete type is embedded in the JSON
-     *       payload; this allows Spring to deserialize the cached value back to the
-     *       correct class without needing explicit type hints at every call site.</li>
-     * </ul>
-     */
     private ObjectMapper redisObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        // Embed type metadata so Spring can deserialize to the correct concrete type.
         mapper.activateDefaultTyping(
                 LaissezFaireSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL,
@@ -55,14 +48,6 @@ public class RedisConfig {
         return mapper;
     }
 
-    /**
-     * Configures the default {@link RedisCacheConfiguration}:
-     * <ul>
-     *   <li>Keys are serialized as plain UTF-8 strings.</li>
-     *   <li>Values are serialized as JSON via {@link GenericJackson2JsonRedisSerializer}.</li>
-     *   <li>Default TTL is 30 minutes; individual caches can override this.</li>
-     * </ul>
-     */
     @Bean
     public RedisCacheConfiguration redisCacheConfiguration() {
         GenericJackson2JsonRedisSerializer jsonSerializer =
@@ -78,16 +63,56 @@ public class RedisConfig {
                 .disableCachingNullValues();
     }
 
-    /**
-     * Registers a {@link RedisCacheManager} that applies the JSON-based cache
-     * configuration to all caches ({@code userProfiles}, {@code patientProfiles},
-     * {@code patientsByPhysio}, {@code allPhysios}).
-     */
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory,
                                           RedisCacheConfiguration redisCacheConfiguration) {
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(redisCacheConfiguration)
                 .build();
+    }
+
+    /**
+     * Returns a named (non-anonymous) error handler so Spring's CGLIB proxy can always
+     * locate the class by name. Anonymous classes ($1, $2 …) cause
+     * {@code ClassNotFoundException} when the proxy tries to load them at runtime.
+     */
+    @Override
+    public CacheErrorHandler errorHandler() {
+        return new ResilientCacheErrorHandler();
+    }
+
+    /**
+     * Cache error handler that silently evicts a corrupt/stale entry on a GET failure
+     * and lets the method re-execute against the real data source.
+     */
+    static class ResilientCacheErrorHandler implements CacheErrorHandler {
+
+        private static final Logger log = LoggerFactory.getLogger(ResilientCacheErrorHandler.class);
+
+        @Override
+        public void handleCacheGetError(RuntimeException ex, Cache cache, Object key) {
+            log.warn("Cache GET error on cache='{}' key='{}' — evicting and falling back to source: {}",
+                    cache.getName(), key, ex.getMessage());
+            try {
+                cache.evict(key);
+            } catch (RuntimeException evictEx) {
+                log.warn("Failed to evict corrupt cache entry key='{}': {}", key, evictEx.getMessage());
+            }
+        }
+
+        @Override
+        public void handleCachePutError(RuntimeException ex, Cache cache, Object key, Object value) {
+            log.warn("Cache PUT error on cache='{}' key='{}': {}", cache.getName(), key, ex.getMessage());
+        }
+
+        @Override
+        public void handleCacheEvictError(RuntimeException ex, Cache cache, Object key) {
+            log.warn("Cache EVICT error on cache='{}' key='{}': {}", cache.getName(), key, ex.getMessage());
+        }
+
+        @Override
+        public void handleCacheClearError(RuntimeException ex, Cache cache) {
+            log.warn("Cache CLEAR error on cache='{}': {}", cache.getName(), ex.getMessage());
+        }
     }
 }

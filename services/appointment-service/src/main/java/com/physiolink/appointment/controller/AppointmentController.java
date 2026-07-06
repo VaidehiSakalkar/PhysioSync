@@ -1,7 +1,9 @@
 package com.physiolink.appointment.controller;
 
+import com.physiolink.appointment.client.PatientServiceClient;
 import com.physiolink.appointment.entity.Appointment;
 import com.physiolink.appointment.service.AppointmentService;
+import com.physiolink.appointment.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,10 +20,19 @@ import java.util.UUID;
 @RequestMapping("/api/appointments")
 public class AppointmentController {
 
-    private final AppointmentService appointmentService;
+    private static final DateTimeFormatter DISPLAY_FMT =
+            DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
 
-    public AppointmentController(AppointmentService appointmentService) {
+    private final AppointmentService appointmentService;
+    private final EmailService emailService;
+    private final PatientServiceClient patientServiceClient;
+
+    public AppointmentController(AppointmentService appointmentService,
+                                 EmailService emailService,
+                                 PatientServiceClient patientServiceClient) {
         this.appointmentService = appointmentService;
+        this.emailService = emailService;
+        this.patientServiceClient = patientServiceClient;
     }
 
     @GetMapping("/my")
@@ -36,12 +48,20 @@ public class AppointmentController {
     @PostMapping
     @PreAuthorize("hasRole('PATIENT') or hasRole('PHYSIO')")
     public ResponseEntity<Appointment> book(Authentication auth, @RequestBody Map<String, Object> body) {
-        UUID physioId = UUID.fromString((String) body.get("physioId"));
+        String physioIdStr = (String) body.get("physioId");
+        if (physioIdStr == null || physioIdStr.isBlank()) {
+            throw new IllegalArgumentException("physioId is required");
+        }
+        UUID physioId = UUID.fromString(physioIdStr);
         UUID patientId;
 
-        // Physio books on behalf of patient, patient books for themselves
+        // Physio books on behalf of patient; patient books for themselves
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PHYSIO"))) {
-            patientId = UUID.fromString((String) body.get("patientId"));
+            String patientIdStr = (String) body.get("patientId");
+            if (patientIdStr == null || patientIdStr.isBlank()) {
+                throw new IllegalArgumentException("patientId is required when booking as a physio");
+            }
+            patientId = UUID.fromString(patientIdStr);
         } else {
             patientId = UUID.fromString(auth.getName());
         }
@@ -50,8 +70,21 @@ public class AppointmentController {
         int duration = body.containsKey("durationMinutes") ? (Integer) body.get("durationMinutes") : 30;
         String notes = (String) body.getOrDefault("notes", "");
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(appointmentService.book(patientId, physioId, scheduledAt, duration, notes));
+        Appointment appointment = appointmentService.book(patientId, physioId, scheduledAt, duration, notes);
+
+        // Fetch patient's real name and email from patient-service, then send confirmation
+        String callerId = auth.getName();
+        String callerRole = auth.getAuthorities().iterator().next().getAuthority()
+                .replace("ROLE_", "");
+        PatientServiceClient.PatientInfo patientInfo =
+                patientServiceClient.fetchPatientInfo(patientId, callerId, callerRole);
+
+        emailService.sendBookingConfirmation(
+                patientInfo.email(),
+                patientInfo.name(),
+                scheduledAt.format(DISPLAY_FMT));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(appointment);
     }
 
     @PutMapping("/{id}/status")

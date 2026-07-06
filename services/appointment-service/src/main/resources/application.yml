@@ -46,6 +46,11 @@ reminder:
   window-hours: 24        # look-ahead window
   cron: "0 */15 * * * *"  # run every 15 minutes
 
+# ── Internal service URLs ─────────────────────────────────────────────────────
+services:
+  patient:
+    url: ${PATIENT_SERVICE_URL:http://localhost:8081}
+
 # ── Actuator ──────────────────────────────────────────────────────────────────
 management:
   endpoints:
