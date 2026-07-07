@@ -36,9 +36,6 @@ PID_APPOINT=$!
 (cd services/video-service && mvn spring-boot:run > ../../logs/video-service.log 2>&1) &
 PID_VIDEO=$!
 
-echo "Starting ML Service..."
-(cd ml-service && source .venv/bin/activate && uvicorn app.main:app --reload --port 8000 > ../logs/ml-service.log 2>&1) &
-PID_ML=$!
 
 echo "Starting Frontend..."
 (cd frontend && npm run dev > ../logs/frontend.log 2>&1) &
