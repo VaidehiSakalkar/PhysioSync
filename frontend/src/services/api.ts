@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-const baseUrlEnv = import.meta.env.VITE_API_BASE_URL
-const baseURL = baseUrlEnv ? `${baseUrlEnv.replace(/\\/+$/, '')}/api` : '/api'
+const baseUrlEnv: string | undefined = import.meta.env.VITE_API_BASE_URL
+const baseURL = baseUrlEnv
+  ? `${baseUrlEnv.endsWith('/') ? baseUrlEnv.slice(0, -1) : baseUrlEnv}/api`
+  : '/api'
 
 const api = axios.create({ baseURL })
 
