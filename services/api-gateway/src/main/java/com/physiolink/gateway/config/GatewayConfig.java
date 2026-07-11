@@ -56,11 +56,17 @@ public class GatewayConfig {
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedOriginPatterns(List.of(
+            "http://localhost:*",
+            "https://physio-sync-eight.vercel.app",
+            "https://*.vercel.app",
+            "https://*.ngrok-free.app",
+            "https://*.ngrok-free.dev"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true); //blocks the passing of cookies or other credentials through headers
-        config.setMaxAge(3600L);//to generate a preflight response
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);//cors is applied to every endpoint
