@@ -39,4 +39,22 @@ public class EmailService {
             log.error("Failed to send reminder to {}: {}", toEmail, e.getMessage());
         }
     }
+
+    @Async
+    public void sendBookingConfirmation(String toEmail, String patientName, String scheduledAt) {
+        try {
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setFrom(fromAddress);
+            msg.setTo(toEmail);
+            msg.setSubject("PhysioLink — Appointment Confirmation");
+            msg.setText(String.format(
+                    "Hi %s,\n\nYour physiotherapy appointment has been confirmed for %s.\n\n" +
+                    "See you then!\n\nTake care,\nPhysioLink Team",
+                    patientName, scheduledAt));
+            mailSender.send(msg);
+            log.info("Booking confirmation sent to {}", toEmail);
+        } catch (Exception e) {
+            log.error("Failed to send booking confirmation to {}: {}", toEmail, e.getMessage());
+        }
+    }
 }

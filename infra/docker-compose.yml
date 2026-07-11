@@ -216,3 +216,16 @@ services:
       - api-gateway
     networks:
       - physiolink-public
+
+  # ── Ngrok Tunnel ────────────────────────────────────────────────────────────
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: physiolink-ngrok
+    restart: unless-stopped
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    command: "http api-gateway:8080"
+    depends_on:
+      - api-gateway
+    networks:
+      - physiolink-net

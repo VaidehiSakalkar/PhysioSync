@@ -39,6 +39,9 @@ gateway:
     - prefix: /ws/pose
       target: ws://${ML_SERVICE_HOST:localhost}:8000
 
+    - prefix: /ws/video
+      target: ws://${VIDEO_SERVICE_HOST:localhost}:8084
+
     - prefix: /api/ask
       target: http://${ML_SERVICE_HOST:localhost}:8000
 
