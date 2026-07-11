@@ -5,7 +5,13 @@ const baseURL = baseUrlEnv
   ? `${baseUrlEnv.endsWith('/') ? baseUrlEnv.slice(0, -1) : baseUrlEnv}/api`
   : '/api'
 
-const api = axios.create({ baseURL })
+const api = axios.create({
+  baseURL,
+  headers: {
+    // Bypasses ngrok's browser warning interstitial page for API requests
+    'ngrok-skip-browser-warning': 'true',
+  },
+})
 
 api.interceptors.request.use(cfg => {
   const token = localStorage.getItem('physiolink_token')
