@@ -72,17 +72,10 @@ public class GatewayConfig {
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-<<<<<<< HEAD
-        source.registerCorsConfiguration("/**", config);//cors is applied to every endpoint
-        
-        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-        bean.setOrder(-1);
-=======
         source.registerCorsConfiguration("/**", config);
 
         var bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // must run before all other filters
->>>>>>> 318efc8 (fix: cors filter ordering and reverse proxy path extraction)
         return bean;
     }
 
