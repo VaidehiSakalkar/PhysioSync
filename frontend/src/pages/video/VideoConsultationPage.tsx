@@ -5,7 +5,8 @@ import { Button } from '../../components/ui/Button'
 import { useToast } from '../../components/ui/Toast'
 import { Video, VideoOff, Mic, MicOff, PhoneOff, Monitor } from 'lucide-react'
 
-const SIGNAL_URL = import.meta.env.VITE_VIDEO_WS_URL ?? 'ws://localhost:8084/ws/video'
+const _videoWsBase = import.meta.env.VITE_VIDEO_WS_URL ?? 'ws://localhost:8084'
+const SIGNAL_URL = `${_videoWsBase.replace(/\/+$/, '')}/ws/video`
 
 export function VideoConsultationPage() {
   const { roomId } = useParams<{ roomId: string }>()
