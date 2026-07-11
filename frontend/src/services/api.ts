@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const api = axios.create({ baseURL: '/api' })
+const baseUrlEnv = import.meta.env.VITE_API_BASE_URL
+const baseURL = baseUrlEnv ? `${baseUrlEnv.replace(/\\/+$/, '')}/api` : '/api'
+
+const api = axios.create({ baseURL })
 
 api.interceptors.request.use(cfg => {
   const token = localStorage.getItem('physiolink_token')

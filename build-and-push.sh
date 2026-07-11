@@ -5,12 +5,7 @@ set -e
 
 SERVICES=(
   "frontend:./frontend"
-  "ml-service:./ml-service"
   "api-gateway:./services/api-gateway"
-  "appointment-service:./services/appointment-service"
-  "exercise-service:./services/exercise-service"
-  "patient-service:./services/patient-service"
-  "video-service:./services/video-service"
 )
 
 for item in "${SERVICES[@]}" ; do
