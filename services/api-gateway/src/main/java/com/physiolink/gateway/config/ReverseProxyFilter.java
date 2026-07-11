@@ -60,7 +60,11 @@ public class ReverseProxyFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String path        = request.getServletPath();
+        // getRequestURI() gives the raw decoded path; getServletPath() can include
+        // extra text appended by some reverse proxies/tunnels (e.g. ngrok).
+        // We strip any query string manually to be safe.
+        String rawPath  = request.getRequestURI();
+        String path     = rawPath.contains("?") ? rawPath.substring(0, rawPath.indexOf('?')) : rawPath;
         String queryString = request.getQueryString();
 
         // ── 1. Resolve downstream target ──────────────────────────────────────

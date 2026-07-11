@@ -3,6 +3,7 @@ package com.physiolink.gateway.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
@@ -50,8 +51,10 @@ public class GatewayConfig {
     // ── CORS ──────────────────────────────────────────────────────────────────
 
     /**
-     * Global CORS policy — mirrors the old {@code spring.cloud.gateway.globalcors}
-     * config. Allows all origins and the standard REST methods.
+     * Global CORS policy registered at HIGHEST_PRECEDENCE so it handles OPTIONS
+     * preflight requests BEFORE ReverseProxyFilter can proxy them downstream.
+     * Without this explicit ordering, Spring registers plain @Bean filters at
+     * Integer.MAX_VALUE (last), meaning preflight would be proxied without CORS headers.
      */
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
@@ -69,10 +72,17 @@ public class GatewayConfig {
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+<<<<<<< HEAD
         source.registerCorsConfiguration("/**", config);//cors is applied to every endpoint
         
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(-1);
+=======
+        source.registerCorsConfiguration("/**", config);
+
+        var bean = new FilterRegistrationBean<>(new CorsFilter(source));
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // must run before all other filters
+>>>>>>> 318efc8 (fix: cors filter ordering and reverse proxy path extraction)
         return bean;
     }
 

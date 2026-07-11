@@ -1,0 +1,16 @@
+version: "3"
+agent:
+  authtoken: NGROK_AUTHTOKEN_PLACEHOLDER
+
+tunnels:
+  physiolink:
+    proto: http
+    addr: api-gateway:8080
+    schemes:
+      - https
+    response_headers:
+      add:
+        - "Access-Control-Allow-Origin: *"
+        - "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        - "Access-Control-Allow-Headers: Authorization, Content-Type, ngrok-skip-browser-warning"
+        - "Access-Control-Max-Age: 3600"
